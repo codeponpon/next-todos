@@ -1,16 +1,36 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ITodo } from '@/app/(index)/interfaces';
 import useTodo from './hooks/useTodo';
 import { Button } from './ui/button';
 
 const Todo = ({ data }: { data?: ITodo[] }) => {
-  const { todos, initialData, addElement } = useTodo();
   const items: ITodo[] = JSON.parse(JSON.stringify(data));
-  if (todos.length == 0) {
-    initialData(items);
-  }
+  const { todos, initialData, addElement, selectedTodos, removeElement } =
+    useTodo();
+  
+  useEffect(() => {
+    if (todos.length == 0) {
+      initialData(items);
+    }
+
+    const updateTime = setInterval(() => {
+      const now = new Date().getTime();
+      selectedTodos.forEach((todo: ITodo) => {
+        if (todo.created_at){
+          const diff = now - todo.created_at;
+          const newSeconds = Math.floor((diff % (1000 * 60)) / 1000);
+          if(newSeconds >= 5){
+            removeElement(todo);
+          }
+        }
+      })
+    }, 1000)
+    
+    return () => clearInterval(updateTime);
+
+  }, [todos, items, initialData, selectedTodos, removeElement])
 
   return (
     <div className="w-full gap-4 grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1">

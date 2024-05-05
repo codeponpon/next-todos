@@ -22,19 +22,17 @@ const TodoType: React.FC<{data: string[]}> = ({data}) => {
                   if (todo.type != type) return;
 
                   return (
-                    <>
-                      <Button
+                    <Button
                       key={todo.name}
-                        variant={"outline"}
-                        className="h-[50px]"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          removeElement(todo);
-                        }}
-                      >
-                        <p className="text-lg">{todo.name}</p>
-                      </Button>
-                    </>
+                      variant={"outline"}
+                      className="h-[50px]"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        removeElement(todo);
+                      }}
+                    >
+                      <p className="text-lg">{todo.name}</p>
+                    </Button>
                   );
                 })}
               </div>

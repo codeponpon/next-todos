@@ -1,4 +1,5 @@
 export interface ITodo {
-  type: "Fruit" | "Vegetable";
+  type: string;
   name: string;
+  created_at?: number | null;
 }

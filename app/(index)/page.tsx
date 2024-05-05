@@ -1,8 +1,8 @@
 import React from "react";
 import { promises as fs } from 'fs';
 import Todo from "@/components/Todo";
-import { ITodo } from "./interfaces";
 import TodoType from "@/components/TodoType";
+import { ITodo } from "./interfaces";
 
 const Home = async () => {
   const resp = await fs.readFile(process.cwd() + "/data/list.json", "utf8");

@@ -2,9 +2,7 @@
 
 import { ITodo } from "@/app/(index)/interfaces";
 import {
-  Dispatch,
   ReactNode,
-  SetStateAction,
   createContext,
   useState,
 } from "react";
@@ -13,11 +11,8 @@ type TodoContextType = {
   todos: ITodo[];
   selectedTodos: ITodo[];
   initialData: (todos: ITodo[]) => void;
-  setElements: Dispatch<SetStateAction<ITodo[]>>;
   addElement: (todo: ITodo) => void;
   removeElement: (todo: ITodo) => void;
-  selectedElement: ITodo | null;
-  setSelectedElement: Dispatch<SetStateAction<ITodo | null>>;
 };
 
 export const TodoContext = createContext<TodoContextType | null>(null);
@@ -29,9 +24,9 @@ export default function TodoContextProvider({
 }) {
   const [todos, setTodos] = useState<ITodo[]>([]);
   const [selectedTodos, setSelectedTodos] = useState<ITodo[]>([]);
-  const [selectedElement, setSelectedElement] = useState<ITodo | null>(null);
 
   const addElement = (todo: ITodo) => {
+    todo.created_at = new Date().getTime()
     setSelectedTodos((prev) => {
       const newTodos = [...prev];
       newTodos.push(todo);
@@ -43,6 +38,7 @@ export default function TodoContextProvider({
   };
 
   const removeElement = (todo: ITodo) => {
+    todo.created_at = null
     setSelectedTodos((prev) =>
       prev.filter((element) => element.name !== todo.name)
     );
@@ -60,11 +56,8 @@ export default function TodoContextProvider({
         todos,
         selectedTodos,
         initialData,
-        setElements: setTodos,
         addElement,
-        removeElement,
-        selectedElement,
-        setSelectedElement,
+        removeElement
       }}
     >
       {children}
