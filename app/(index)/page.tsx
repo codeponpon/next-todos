@@ -7,24 +7,20 @@ import TodoType from "@/components/TodoType";
 const Home = async () => {
   const resp = await fs.readFile(process.cwd() + "/data/list.json", "utf8");
   const data = JSON.parse(resp);
-  const types = data
+  const types: string[] = data
     .map((item: ITodo) => item.type)
     .filter(
       (type: string, i: number, types: string[]) => types.indexOf(type) == i
-    );
+    )
+    
   return (
     <div className="container pt-4">
       <div className="flex gap-4">
         <div className="w-4/12">
-          {data && <Todo loading={false} data={data} />}
+          {data && <Todo data={data} />}
         </div>
 
-        {types &&
-          types.map((type: string) => (
-            <div className="w-4/12" key={type}>
-              <TodoType title={type} data={[]} />
-            </div>
-          ))}
+        <TodoType data={types} />
       </div>
     </div>
   );
